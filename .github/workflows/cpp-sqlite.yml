@@ -1,0 +1,26 @@
+name: C++ SQLite Build
+
+on:
+  push:
+    branches: [ "dev1" ]
+  pull_request:
+    branches: [ "dev1" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y g++ make sqlite3 libsqlite3-dev
+
+    - name: Build project
+      run: make
+
+    - name: Verify binary
+      run: test -f bin/salon && echo "Build successful." || (echo "Build failed!" && exit 1)
